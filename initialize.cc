@@ -7,8 +7,8 @@ static void addPrimOp(nix::EvalState& state, nix::Value& v, const nix::Symbol & 
     vAttr->primOp = new (UseGC) nix::PrimOp(primOp, arity, name);
 }
 
-[[gnu::visibility ("default")]]
-    extern "C" void initialize(nix::EvalState& state, nix::Value& v) {
+extern "C" [[gnu::visibility ("default")]]
+    void initialize(nix::EvalState& state, nix::Value& v) {
     state.mkAttrs(v, 1);
     addPrimOp(state, v, state.symbols.create("readdir"), 1, prim_readdir);
 }
