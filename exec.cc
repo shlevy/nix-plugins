@@ -1,5 +1,6 @@
 #include <nix/eval.hh>
 #include <nix/eval-inline.hh>
+#include <nix/config.h>
 using namespace nix;
 
 #ifndef ENABLE_S3
