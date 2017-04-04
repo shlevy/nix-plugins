@@ -13,7 +13,7 @@ GC_INCLUDE=/usr/local/include
 GC_LIB=/usr/local/lib
 PLUGINS_CXXFLAGS=-flto -O3 -std=c++11 -fpic -I$(NIX_INCLUDE) -I$(NIX_INCLUDE)/nix -I$(GC_INCLUDE) $(CXXFLAGS)
 PLUGINS_LDFLAGS=-shared -flto -lnixexpr -lgc -lnixutil -lnixformat -L$(NIX_LIB) -L$(GC_LIB) $(LDFLAGS)
-OBJS=initialize.o readdir.o
+OBJS=initialize.o exec.o
 
 .SUFFIXES:
 

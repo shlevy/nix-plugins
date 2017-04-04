@@ -10,5 +10,5 @@ static void addPrimOp(nix::EvalState& state, nix::Value& v, const nix::Symbol & 
 extern "C" [[gnu::visibility ("default")]]
     void initialize(nix::EvalState& state, nix::Value& v) {
     state.mkAttrs(v, 1);
-    addPrimOp(state, v, state.symbols.create("readdir"), 1, prim_readdir);
+    addPrimOp(state, v, state.symbols.create("exec"), 1, prim_exec);
 }
