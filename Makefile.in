@@ -12,7 +12,7 @@ RM=rm
 NIX_INCLUDE=/usr/local/include
 GC_INCLUDE=/usr/local/include
 PLUGINS_CXXFLAGS=-O3 -std=c++14 -fpic -I$(NIX_INCLUDE)/nix -I$(GC_INCLUDE) $(CXXFLAGS)
-PLUGINS_LDFLAGS=-shared @undefined@ $(LDFLAGS)
+PLUGINS_LDFLAGS=-shared -nodefaultlibs @undefined@ $(LDFLAGS)
 OBJS=initialize.o exec.o
 
 .SUFFIXES:
