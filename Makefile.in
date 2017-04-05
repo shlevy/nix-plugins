@@ -1,5 +1,7 @@
 .POSIX:
 
+.PHONY: install clean distclean all
+
 all: nix-plugins.nixc
 
 PREFIX=/usr/local
@@ -10,7 +12,7 @@ RM=rm
 NIX_INCLUDE=/usr/local/include
 GC_INCLUDE=/usr/local/include
 PLUGINS_CXXFLAGS=-O3 -std=c++14 -fpic -I$(NIX_INCLUDE)/nix -I$(GC_INCLUDE) $(CXXFLAGS)
-PLUGINS_LDFLAGS=-shared -undefined dynamic_lookup $(LDFLAGS)
+PLUGINS_LDFLAGS=-shared @undefined@ $(LDFLAGS)
 OBJS=initialize.o exec.o
 
 .SUFFIXES:
@@ -29,3 +31,6 @@ install: nix-plugins.nixc
 
 clean:
 	$(RM) -f $(OBJS) nix-plugins.nixc
+
+distclean: clean
+	$(RM) -f Makefile
