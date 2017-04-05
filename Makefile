@@ -8,11 +8,9 @@ MKDIR=mkdir
 CP=cp
 RM=rm
 NIX_INCLUDE=/usr/local/include
-NIX_LIB=/usr/local/lib
 GC_INCLUDE=/usr/local/include
-GC_LIB=/usr/local/lib
-PLUGINS_CXXFLAGS=-O3 -std=c++14 -fpic -I$(NIX_INCLUDE) -I$(NIX_INCLUDE)/nix -I$(GC_INCLUDE) $(CXXFLAGS)
-PLUGINS_LDFLAGS=-shared -lnixexpr -lgc -lnixutil -lnixformat -L$(NIX_LIB) -L$(GC_LIB) $(LDFLAGS)
+PLUGINS_CXXFLAGS=-O3 -std=c++14 -fpic -I$(NIX_INCLUDE)/nix -I$(GC_INCLUDE) $(CXXFLAGS)
+PLUGINS_LDFLAGS=-shared -undefined dynamic_lookup $(LDFLAGS)
 OBJS=initialize.o exec.o
 
 .SUFFIXES:
