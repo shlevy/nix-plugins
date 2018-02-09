@@ -1,7 +1,10 @@
-#include <nix/config.h>
-#include <nix/primops.hh>
-#include <nix/globals.hh>
+#include <config.h>
+#include <primops.hh>
+#include <globals.hh>
+#include <eval-inline.hh>
 #include <dlfcn.h>
+
+#include "nix-plugins-config.h"
 
 #if HAVE_BOEHMGC
 
@@ -141,3 +144,14 @@ static void extraBuiltins(EvalState & state, const Pos & _pos,
 
 static RegisterPrimOp r("__com.shealevy.nix-plugins.extraBuiltins", 0,
     extraBuiltins);
+
+static void cflags(EvalState & state, const Pos & _pos,
+    Value ** _args, Value & v)
+{
+    state.mkAttrs(v, 2);
+    mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_INCLUDE_DIRS")), NIX_INCLUDE_DIRS);
+    mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_CFLAGS_OTHER")), NIX_CFLAGS_OTHER);
+}
+
+static RegisterPrimOp r1("__com.shealevy.nix-plugins.nix-cflags", 0,
+    cflags);
