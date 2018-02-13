@@ -12,3 +12,5 @@ configure_file(nix-plugins-config.h.in nix-plugins-config.h)
 target_include_directories(nix-extra-builtins PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(nix-extra-builtins PUBLIC ${NIX_INCLUDE_DIRS})
 target_compile_options(nix-extra-builtins PUBLIC ${NIX_CFLAGS_OTHER})
+
+install(TARGETS nix-extra-builtins DESTINATION lib/nix/plugins)
