@@ -11,6 +11,10 @@ add_library(nix-extra-builtins MODULE extra-builtins.cc)
 configure_file(nix-plugins-config.h.in nix-plugins-config.h)
 target_include_directories(nix-extra-builtins PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(nix-extra-builtins PUBLIC ${NIX_INCLUDE_DIRS})
-target_compile_options(nix-extra-builtins PUBLIC ${NIX_CFLAGS_OTHER})
+target_compile_options(nix-extra-builtins PUBLIC -std=c++14 ${NIX_CFLAGS_OTHER})
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+  set_target_properties(nix-extra-builtins PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+endif()
 
 install(TARGETS nix-extra-builtins DESTINATION lib/nix/plugins)
