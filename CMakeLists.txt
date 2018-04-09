@@ -7,6 +7,12 @@ find_package(PkgConfig)
 
 pkg_check_modules(NIX REQUIRED nix-expr>=2.0 nix-main>=2.0 nix-store>=2.0)
 
+find_path(BOOST_INCLUDE_DIR boost/format.hpp)
+if(BOOST_INCLUDE_DIR STREQUAL "BOOST_INCLUDE_DIR-NOTFOUND")
+  message(FATAL_ERROR "Could not find Boost formatting library.")
+endif()
+include_directories(${BOOST_INCLUDE_DIR})
+
 add_library(nix-extra-builtins MODULE extra-builtins.cc)
 configure_file(nix-plugins-config.h.in nix-plugins-config.h)
 target_include_directories(nix-extra-builtins PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
