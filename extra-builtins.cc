@@ -66,7 +66,7 @@ static void extraBuiltins(EvalState & state, const Pos & _pos,
     }
 }
 
-static RegisterPrimOp r("__com.shealevy.nix-plugins.extraBuiltins", 0,
+static RegisterPrimOp rp1("__extraBuiltins", 0,
     extraBuiltins);
 
 static void cflags(EvalState & state, const Pos & _pos,
@@ -77,5 +77,5 @@ static void cflags(EvalState & state, const Pos & _pos,
     mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_CFLAGS_OTHER")), NIX_CFLAGS_OTHER);
 }
 
-static RegisterPrimOp r1("__com.shealevy.nix-plugins.nix-cflags", 0,
+static RegisterPrimOp rp2("__nix-cflags", 0,
     cflags);

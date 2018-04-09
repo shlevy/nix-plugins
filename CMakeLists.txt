@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.9)
 project (nix-plugins)
-set (nix-plugins_VERSION_MAJOR 3)
+set (nix-plugins_VERSION_MAJOR 4)
 set (nix-plugins_VERSION_MINOR 0)
 
 find_package(PkgConfig)
