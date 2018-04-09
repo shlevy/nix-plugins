@@ -17,7 +17,7 @@ This plugin adds a setting `extra-builtins-file` and two builtins:
   file does not exist, `extraBuiltins` will be `null`.
 * `nix-cflags`: A set of required flags needed to build a native
   plugin against the same version of Nix this plugin is compiled
-  against. Currently contains `NIX_INCLUDE_DIRS`, BOOST_INCLUDE_DIR`,
+  against. Currently contains `NIX_INCLUDE_DIRS`, `BOOST_INCLUDE_DIR`,
   and `NIX_CFLAGS_OTHER`.
 
 This allows users to specify a fixed set of safe extra builtins
