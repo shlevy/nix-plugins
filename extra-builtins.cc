@@ -22,17 +22,20 @@
 
 using namespace nix;
 
+static BaseSetting<Path> extraBuiltinsFile{
+    settings.nixConfDir + "/extra-builtins.nix",
+        "extra-builtins-file",
+        "The path to a nix expression defining extra expression-language level builtins."};
 
+static RegisterSetting rp(&extraBuiltinsFile);
 
 
 static void extraBuiltins(EvalState & state, const Pos & _pos,
     Value ** _args, Value & v)
 {
-    auto extraBuiltinsFile =
-        absPath(settings.nixConfDir + "/extra-builtins.nix");
     if (state.allowedPaths)
         state.allowedPaths->insert(extraBuiltinsFile);
-    
+
     try {
         auto fun = state.allocValue();
         state.evalFile(extraBuiltinsFile, *fun);
