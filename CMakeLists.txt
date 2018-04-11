@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.9)
 project (nix-plugins)
 set (nix-plugins_VERSION_MAJOR 4)
 set (nix-plugins_VERSION_MINOR 0)
-set (nix-plugins_VERSION_PATCH 1)
+set (nix-plugins_VERSION_PATCH 2)
 
 find_package(PkgConfig)
 
@@ -13,6 +13,10 @@ if(BOOST_INCLUDE_DIR STREQUAL "BOOST_INCLUDE_DIR-NOTFOUND")
   message(FATAL_ERROR "Could not find Boost formatting library.")
 endif()
 include_directories(${BOOST_INCLUDE_DIR})
+
+if(APPLE)
+  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -flat_namespace -undefined suppress")
+endif()
 
 add_library(nix-extra-builtins MODULE extra-builtins.cc)
 configure_file(nix-plugins-config.h.in nix-plugins-config.h)
