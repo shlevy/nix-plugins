@@ -22,17 +22,21 @@
 
 using namespace nix;
 
-static BaseSetting<Path> extraBuiltinsFile{
-    settings.nixConfDir + "/extra-builtins.nix",
-        "extra-builtins-file",
-        "The path to a nix expression defining extra expression-language level builtins."};
+struct ExtraBuiltinsSettings : Config {
+    Setting<Path> extraBuiltinsFile{this,
+        settings.nixConfDir + "/extra-builtins.nix",
+            "extra-builtins-file",
+            "The path to a nix expression defining extra expression-language level builtins."};
+};
 
-static RegisterSetting rp(&extraBuiltinsFile);
+static ExtraBuiltinsSettings extraBuiltinsSettings;
 
+static GlobalConfig::Register rp(&extraBuiltinsSettings);
 
 static void extraBuiltins(EvalState & state, const Pos & _pos,
     Value ** _args, Value & v)
 {
+    static auto extraBuiltinsFile = extraBuiltinsSettings.extraBuiltinsFile;
     if (state.allowedPaths)
         state.allowedPaths->insert(extraBuiltinsFile);
 
@@ -40,7 +44,7 @@ static void extraBuiltins(EvalState & state, const Pos & _pos,
         auto fun = state.allocValue();
         state.evalFile(extraBuiltinsFile, *fun);
         Value * arg;
-        if (settings.enableNativeCode) {
+        if (evalSettings.enableNativeCode) {
             arg = state.baseEnv.values[0];
         } else {
             arg = state.allocValue();
