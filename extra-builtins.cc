@@ -70,12 +70,9 @@ static RegisterPrimOp rp1("__extraBuiltins", 0,
 static void cflags(EvalState & state, const Pos & _pos,
     Value ** _args, Value & v)
 {
-    state.mkAttrs(v, 6);
+    state.mkAttrs(v, 3);
     mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_INCLUDE_DIRS")), NIX_INCLUDE_DIRS);
     mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_CFLAGS_OTHER")), NIX_CFLAGS_OTHER);
-    mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_LIBRARIES")), NIX_LIBRARIES);
-    mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_LIBRARY_DIRS")), NIX_LIBRARY_DIRS);
-    mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_LDFLAGS_OTHER")), NIX_LDFLAGS_OTHER);
     mkStringNoCopy(*state.allocAttr(v, state.symbols.create("BOOST_INCLUDE_DIR")), BOOST_INCLUDE_DIR);
 }
 
