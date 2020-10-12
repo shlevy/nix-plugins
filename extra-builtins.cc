@@ -18,7 +18,7 @@ using namespace nix;
 
 struct ExtraBuiltinsSettings : Config {
     Setting<Path> extraBuiltinsFile{this,
-        settings.nixConfDir + "/extra-builtins.nix",
+        fmt("%s/%s", settings.nixConfDir, "extra-builtins.nix"),
             "extra-builtins-file",
             "The path to a nix expression defining extra expression-language level builtins."};
 };
