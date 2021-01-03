@@ -46,13 +46,11 @@ static void extraBuiltins(EvalState & state, const Pos & _pos,
 
             auto sExec = state.symbols.create("exec");
             auto vExec = state.allocAttr(*arg, sExec);
-            vExec->type = tPrimOp;
-            vExec->primOp = new PrimOp { .fun = prim_exec, .arity = 1, .name = sExec};
+            vExec->mkPrimOp(new PrimOp { .fun = prim_exec, .arity = 1, .name = sExec});
 
             auto sImportNative = state.symbols.create("importNative");
             auto vImportNative = state.allocAttr(*arg, sImportNative);
-            vImportNative->type = tPrimOp;
-            vImportNative->primOp = new PrimOp { .fun = prim_importNative, .arity = 2, .name = sImportNative };
+            vImportNative->mkPrimOp(new PrimOp { .fun = prim_importNative, .arity = 2, .name = sImportNative });
 
             arg->attrs->sort();
         }
