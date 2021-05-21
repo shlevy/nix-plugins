@@ -26,3 +26,13 @@ code. The expectation is that `extra-builtins-file` defines a set of
 builtins, but ultimately that's up to the end user.
 
 [config_h_in]: ./nix-plugins-config.h.in
+
+Install
+-------
+
+To enable these plugins system-wide on NixOS, add the following to your configuration:
+```
+nix.extraOptions = ''
+  plugin-files = ${pkgs.nix-plugins}/lib/nix/plugins
+'';
+```
