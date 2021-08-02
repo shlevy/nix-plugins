@@ -46,13 +46,11 @@ static void extraBuiltins(EvalState & state, const Pos & _pos,
 
             auto sExec = state.symbols.create("exec");
             auto vExec = state.allocAttr(*arg, sExec);
-            vExec->type = tPrimOp;
-            vExec->primOp = new PrimOp(prim_exec, 1, sExec);
+            vExec->mkPrimOp(new PrimOp { .fun = prim_exec, .arity = 1, .name = sExec });
 
             auto sImportNative = state.symbols.create("importNative");
             auto vImportNative = state.allocAttr(*arg, sImportNative);
-            vImportNative->type = tPrimOp;
-            vImportNative->primOp = new PrimOp(prim_importNative, 2, sImportNative);
+            vImportNative->mkPrimOp(new PrimOp { .fun = prim_importNative, .arity = 2, .name = sImportNative });
 
             arg->attrs->sort();
         }
@@ -71,9 +69,10 @@ static void cflags(EvalState & state, const Pos & _pos,
     Value ** _args, Value & v)
 {
     state.mkAttrs(v, 3);
-    mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_INCLUDE_DIRS")), NIX_INCLUDE_DIRS);
-    mkStringNoCopy(*state.allocAttr(v, state.symbols.create("NIX_CFLAGS_OTHER")), NIX_CFLAGS_OTHER);
-    mkStringNoCopy(*state.allocAttr(v, state.symbols.create("BOOST_INCLUDE_DIR")), BOOST_INCLUDE_DIR);
+    state.allocAttr(v, state.symbols.create("NIX_INCLUDE_DIRS"))->mkString(NIX_INCLUDE_DIRS);
+    state.allocAttr(v, state.symbols.create("NIX_CFLAGS_OTHER"))->mkString(NIX_CFLAGS_OTHER);
+    state.allocAttr(v, state.symbols.create("BOOST_INCLUDE_DIR"))->mkString(BOOST_INCLUDE_DIR);
+    v.attrs->sort();
 }
 
 static RegisterPrimOp rp2("__nix-cflags", 0,
