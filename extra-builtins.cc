@@ -55,6 +55,7 @@ static void extraBuiltins(EvalState & state, const Pos & _pos,
             arg->attrs->sort();
         }
         mkApp(v, *fun, *arg);
+        state.forceValue(v);
     } catch (SysError & e) {
         if (e.errNo != ENOENT)
             throw;
