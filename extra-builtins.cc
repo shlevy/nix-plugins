@@ -27,10 +27,10 @@ static ExtraBuiltinsSettings extraBuiltinsSettings;
 
 static GlobalConfig::Register rp(&extraBuiltinsSettings);
 
-static void extraBuiltins(EvalState & state, const Pos & _pos,
+static void extraBuiltins(EvalState & state, const Pos & pos,
     Value ** _args, Value & v)
 {
-    static auto extraBuiltinsFile = extraBuiltinsSettings.extraBuiltinsFile;
+    static auto extraBuiltinsFile = absPath(extraBuiltinsSettings.extraBuiltinsFile);
     if (state.allowedPaths)
         state.allowedPaths->insert(extraBuiltinsFile);
 
@@ -41,25 +41,23 @@ static void extraBuiltins(EvalState & state, const Pos & _pos,
         if (evalSettings.enableNativeCode) {
             arg = state.baseEnv.values[0];
         } else {
-            arg = state.allocValue();
-            state.mkAttrs(*arg, 2);
+            auto attrs = state.buildBindings(2);
 
             auto sExec = state.symbols.create("exec");
-            auto vExec = state.allocAttr(*arg, sExec);
-            vExec->mkPrimOp(new PrimOp { .fun = prim_exec, .arity = 1, .name = sExec });
+            attrs.alloc(sExec).mkPrimOp(new PrimOp { .fun = prim_exec, .arity = 1, .name = sExec });
 
             auto sImportNative = state.symbols.create("importNative");
-            auto vImportNative = state.allocAttr(*arg, sImportNative);
-            vImportNative->mkPrimOp(new PrimOp { .fun = prim_importNative, .arity = 2, .name = sImportNative });
+            attrs.alloc(sImportNative).mkPrimOp(new PrimOp { .fun = prim_importNative, .arity = 2, .name = sImportNative });
 
-            arg->attrs->sort();
+            arg = state.allocValue();
+            arg->mkAttrs(attrs);
         }
-        mkApp(v, *fun, *arg);
-        state.forceValue(v);
+        v.mkApp(fun, arg);
+        state.forceValue(v, pos);
     } catch (SysError & e) {
         if (e.errNo != ENOENT)
             throw;
-        mkNull(v);
+        v.mkNull();
     }
 }
 
@@ -69,11 +67,11 @@ static RegisterPrimOp rp1("__extraBuiltins", 0,
 static void cflags(EvalState & state, const Pos & _pos,
     Value ** _args, Value & v)
 {
-    state.mkAttrs(v, 3);
-    state.allocAttr(v, state.symbols.create("NIX_INCLUDE_DIRS"))->mkString(NIX_INCLUDE_DIRS);
-    state.allocAttr(v, state.symbols.create("NIX_CFLAGS_OTHER"))->mkString(NIX_CFLAGS_OTHER);
-    state.allocAttr(v, state.symbols.create("BOOST_INCLUDE_DIR"))->mkString(BOOST_INCLUDE_DIR);
-    v.attrs->sort();
+    auto attrs = state.buildBindings(3);
+    attrs.alloc("NIX_INCLUDE_DIRS").mkString(NIX_INCLUDE_DIRS);
+    attrs.alloc("NIX_CFLAGS_OTHER").mkString(NIX_CFLAGS_OTHER);
+    attrs.alloc("BOOST_INCLUDE_DIR").mkString(BOOST_INCLUDE_DIR);
+    v.mkAttrs(attrs);
 }
 
 static RegisterPrimOp rp2("__nix-cflags", 0,
