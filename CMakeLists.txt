@@ -1,12 +1,12 @@
 cmake_minimum_required (VERSION 3.9)
 project (nix-plugins)
-set (nix-plugins_VERSION_MAJOR 9)
+set (nix-plugins_VERSION_MAJOR 10)
 set (nix-plugins_VERSION_MINOR 0)
 set (nix-plugins_VERSION_PATCH 0)
 
 find_package(PkgConfig)
 
-pkg_check_modules(NIX REQUIRED nix-expr>=2.8 nix-main>=2.8 nix-store>=2.8)
+pkg_check_modules(NIX REQUIRED nix-expr>=2.9 nix-main>=2.9 nix-store>=2.9)
 
 find_path(BOOST_INCLUDE_DIR boost/format.hpp)
 if(BOOST_INCLUDE_DIR STREQUAL "BOOST_INCLUDE_DIR-NOTFOUND")
