@@ -30,9 +30,9 @@ static GlobalConfig::Register rp(&extraBuiltinsSettings);
 static void extraBuiltins(EvalState & state, const PosIdx pos,
     Value ** _args, Value & v)
 {
-    static auto extraBuiltinsFile = absPath(extraBuiltinsSettings.extraBuiltinsFile);
+    static auto extraBuiltinsFile = state.rootPath(CanonPath(extraBuiltinsSettings.extraBuiltinsFile.to_string()));
     if (state.allowedPaths)
-        state.allowedPaths->insert(extraBuiltinsFile);
+        state.allowedPaths->insert(extraBuiltinsFile.path.abs());
 
     try {
         auto fun = state.allocValue();
