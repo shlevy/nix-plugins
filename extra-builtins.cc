@@ -44,10 +44,18 @@ static void extraBuiltins(EvalState & state, const PosIdx pos,
             auto attrs = state.buildBindings(2);
 
             auto sExec = state.symbols.create("exec");
-            attrs.alloc(sExec).mkPrimOp(new PrimOp { .fun = prim_exec, .arity = 1, .name = "exec" });
+            attrs.alloc(sExec).mkPrimOp(new PrimOp {
+                .name = "exec",
+                .arity = 1,
+                .fun = prim_exec,
+            });
 
             auto sImportNative = state.symbols.create("importNative");
-            attrs.alloc(sImportNative).mkPrimOp(new PrimOp { .fun = prim_importNative, .arity = 2, .name = "importNative" });
+            attrs.alloc(sImportNative).mkPrimOp(new PrimOp {
+                .name = "importNative",
+                .arity = 2,
+                .fun = prim_importNative,
+            });
 
             arg = state.allocValue();
             arg->mkAttrs(attrs);
@@ -61,8 +69,11 @@ static void extraBuiltins(EvalState & state, const PosIdx pos,
     }
 }
 
-static RegisterPrimOp rp1("__extraBuiltins", 0,
-    extraBuiltins);
+static RegisterPrimOp rp1({
+    .name = "__extraBuiltins",
+    .arity = 0,
+    .fun = extraBuiltins,
+});
 
 static void cflags(EvalState & state, const PosIdx _pos,
     Value ** _args, Value & v)
@@ -74,5 +85,8 @@ static void cflags(EvalState & state, const PosIdx _pos,
     v.mkAttrs(attrs);
 }
 
-static RegisterPrimOp rp2("__nix-cflags", 0,
-    cflags);
+static RegisterPrimOp rp2({
+    .name = "__nix-cflags",
+    .arity = 0,
+    .fun = cflags,
+});
