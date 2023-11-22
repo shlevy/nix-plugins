@@ -2,6 +2,7 @@
 #include <primops.hh>
 #include <globals.hh>
 #include <eval-inline.hh>
+#include <eval-settings.hh>
 #include <dlfcn.h>
 
 #include "nix-plugins-config.h"
