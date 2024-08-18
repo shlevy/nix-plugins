@@ -1,19 +1,12 @@
 #include <config.h>
 #include <primops.hh>
 #include <globals.hh>
-#include <eval-inline.hh>
+#include <config-global.hh>
 #include <eval-settings.hh>
-#include <dlfcn.h>
+#include <common-eval-args.hh>
+#include <filtering-source-accessor.hh>
 
 #include "nix-plugins-config.h"
-
-#if HAVE_BOEHMGC
-
-#include <gc/gc.h>
-#include <gc/gc_cpp.h>
-
-#endif
-
 
 using namespace nix;
 
@@ -32,8 +25,8 @@ static void extraBuiltins(EvalState & state, const PosIdx pos,
     Value ** _args, Value & v)
 {
     static auto extraBuiltinsFile = state.rootPath(CanonPath(extraBuiltinsSettings.extraBuiltinsFile.to_string()));
-    if (state.allowedPaths)
-        state.allowedPaths->insert(extraBuiltinsFile.path.abs());
+    if (auto rootFS2 = state.rootFS.dynamic_pointer_cast<AllowListSourceAccessor>())
+        rootFS2->allowPrefix(CanonPath(extraBuiltinsFile.path.abs()));
 
     try {
         auto fun = state.allocValue();
@@ -63,9 +56,7 @@ static void extraBuiltins(EvalState & state, const PosIdx pos,
         }
         v.mkApp(fun, arg);
         state.forceValue(v, pos);
-    } catch (SysError & e) {
-        if (e.errNo != ENOENT)
-            throw;
+    } catch (FileNotFound &) {
         v.mkNull();
     }
 }
