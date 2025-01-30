@@ -39,28 +39,24 @@ static void extraBuiltins(EvalState & state, const PosIdx pos,
         auto fun = state.allocValue();
         state.evalFile(extraBuiltinsFile, *fun);
         Value * arg;
-        if (evalSettings.enableNativeCode) {
-            arg = state.baseEnv.values[0];
-        } else {
-            auto attrs = state.buildBindings(2);
+        auto attrs = state.buildBindings(2);
 
-            auto sExec = state.symbols.create("exec");
-            attrs.alloc(sExec).mkPrimOp(new PrimOp {
-                .name = "exec",
-                .arity = 1,
-                .fun = prim_exec,
-            });
+        auto sExec = state.symbols.create("exec");
+        attrs.alloc(sExec).mkPrimOp(new PrimOp {
+            .name = "exec",
+            .arity = 1,
+            .fun = prim_exec,
+        });
 
-            auto sImportNative = state.symbols.create("importNative");
-            attrs.alloc(sImportNative).mkPrimOp(new PrimOp {
-                .name = "importNative",
-                .arity = 2,
-                .fun = prim_importNative,
-            });
+        auto sImportNative = state.symbols.create("importNative");
+        attrs.alloc(sImportNative).mkPrimOp(new PrimOp {
+            .name = "importNative",
+            .arity = 2,
+            .fun = prim_importNative,
+        });
 
-            arg = state.allocValue();
-            arg->mkAttrs(attrs);
-        }
+        arg = state.allocValue();
+        arg->mkAttrs(attrs);
         v.mkApp(fun, arg);
         state.forceValue(v, pos);
     } catch (SysError & e) {
