@@ -1,10 +1,10 @@
-#include <config.h>
-#include <primops.hh>
-#include <globals.hh>
-#include <config-global.hh>
-#include <eval-settings.hh>
-#include <common-eval-args.hh>
-#include <filtering-source-accessor.hh>
+#include <nix/cmd/common-eval-args.hh>
+#include <nix/expr/eval-settings.hh>
+#include <nix/expr/primops.hh>
+#include <nix/fetchers/filtering-source-accessor.hh>
+#include <nix/store/globals.hh>
+#include <nix/util/config-global.hh>
+
 
 #include "nix-plugins-config.h"
 

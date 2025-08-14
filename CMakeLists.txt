@@ -6,7 +6,7 @@ set (nix-plugins_VERSION_PATCH 0)
 
 find_package(PkgConfig)
 
-pkg_check_modules(NIX REQUIRED nix-expr>=2.24 nix-main>=2.24 nix-store>=2.24)
+pkg_check_modules(NIX REQUIRED nix-cmd>=2.28 nix-expr>=2.28 nix-main>=2.28 nix-store>=2.28)
 
 find_path(BOOST_INCLUDE_DIR boost/format.hpp)
 if(BOOST_INCLUDE_DIR STREQUAL "BOOST_INCLUDE_DIR-NOTFOUND")
