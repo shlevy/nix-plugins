@@ -18,6 +18,7 @@
           nixVersions.nixComponents_2_30.nix-expr
           nixVersions.nixComponents_2_30.nix-cmd
           nixVersions.nixComponents_2_30.nix-fetchers
+          nixVersions.nix_2_30
           boost
         ];
       };
