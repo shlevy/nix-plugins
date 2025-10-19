@@ -3,6 +3,7 @@
 #include <nix/expr/primops.hh>
 #include <nix/fetchers/filtering-source-accessor.hh>
 #include <nix/store/globals.hh>
+#include <nix/util/configuration.hh>
 #include <nix/util/config-global.hh>
 
 
