@@ -12,8 +12,8 @@
 using namespace nix;
 
 struct ExtraBuiltinsSettings : Config {
-    Setting<Path> extraBuiltinsFile{this,
-        settings.nixConfDir + "/extra-builtins.nix",
+    Setting<std::filesystem::path> extraBuiltinsFile{this,
+        nixConfDir() + "/extra-builtins.nix",
             "extra-builtins-file",
             "The path to a nix expression defining extra expression-language level builtins."};
 };
@@ -42,14 +42,14 @@ static void extraBuiltins(EvalState & state, const PosIdx pos,
             attrs.alloc(sExec).mkPrimOp(new PrimOp {
                 .name = "exec",
                 .arity = 1,
-                .fun = prim_exec,
+                .impl = prim_exec,
             });
 
             auto sImportNative = state.symbols.create("importNative");
             attrs.alloc(sImportNative).mkPrimOp(new PrimOp {
                 .name = "importNative",
                 .arity = 2,
-                .fun = prim_importNative,
+                .impl = prim_importNative,
             });
 
             arg = state.allocValue();
@@ -65,21 +65,21 @@ static void extraBuiltins(EvalState & state, const PosIdx pos,
 static RegisterPrimOp rp1({
     .name = "__extraBuiltins",
     .arity = 0,
-    .fun = extraBuiltins,
+    .impl = extraBuiltins,
 });
 
 static void cflags(EvalState & state, const PosIdx _pos,
     Value ** _args, Value & v)
 {
     auto attrs = state.buildBindings(3);
-    attrs.alloc("NIX_INCLUDE_DIRS").mkString(NIX_INCLUDE_DIRS);
-    attrs.alloc("NIX_CFLAGS_OTHER").mkString(NIX_CFLAGS_OTHER);
-    attrs.alloc("BOOST_INCLUDE_DIR").mkString(BOOST_INCLUDE_DIR);
+    attrs.alloc("NIX_INCLUDE_DIRS").mkString(NIX_INCLUDE_DIRS, state.mem);
+    attrs.alloc("NIX_CFLAGS_OTHER").mkString(NIX_CFLAGS_OTHER, state.mem);
+    attrs.alloc("BOOST_INCLUDE_DIR").mkString(BOOST_INCLUDE_DIR, state.mem);
     v.mkAttrs(attrs);
 }
 
 static RegisterPrimOp rp2({
     .name = "__nix-cflags",
     .arity = 0,
-    .fun = cflags,
+    .impl = cflags,
 });
