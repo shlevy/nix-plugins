@@ -14,11 +14,11 @@
         buildInputs = with nixpkgs.legacyPackages.${system}; [
           cmake
           pkg-config
-          nixVersions.nixComponents_2_30.nix-store
-          nixVersions.nixComponents_2_30.nix-expr
-          nixVersions.nixComponents_2_30.nix-cmd
-          nixVersions.nixComponents_2_30.nix-fetchers
-          nixVersions.nix_2_30
+          nixVersions.nixComponents_2_34.nix-store
+          nixVersions.nixComponents_2_34.nix-expr
+          nixVersions.nixComponents_2_34.nix-cmd
+          nixVersions.nixComponents_2_34.nix-fetchers
+          nixVersions.nix_2_34
           boost
         ];
       };
